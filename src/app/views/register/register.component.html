@@ -1,0 +1,32 @@
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+
+    <div class="fadeIn first">
+      <img src="assets/logo.png" id="icon" alt="User Icon" />
+    </div>
+
+    <h1 class="font-monospace" style="color: #588157;">
+      Regístrate
+    </h1>
+    <br>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister(registerForm.value)">
+      <input type="text" id="name" class="fadeIn second" placeholder="Nombre" formControlName="name">
+      <input type="text" id="surname" class="fadeIn second" placeholder="Apellido" formControlName="surname">
+      <input type="text" id="username" class="fadeIn second" placeholder="Username" formControlName="username">
+      <input type="text" id="email" class="fadeIn second" placeholder="Correo electrónico" formControlName="email">
+      <input type="password" id="password" class="fadeIn third" placeholder="Contraseña" formControlName="password">
+      <input type="submit" class="fadeIn fourth mt-4" value="Registrarse">
+    </form>
+    <div class="mb-5">
+      <p>¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión</a></p>
+    </div>
+
+    <div class="m-3">
+      <div class="alert alert-danger" role="alert" *ngIf="errStatus">
+        <p>{{ errMsg }}</p>
+      </div>
+    </div>
+
+  </div>
+</div>

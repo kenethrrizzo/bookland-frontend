@@ -1,0 +1,29 @@
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+
+    <div class="fadeIn first">
+      <img src="assets/logo.png" id="icon" alt="User Icon" />
+    </div>
+
+    <h1 class="font-monospace" style="color: #588157;">
+      Inicia sesión
+    </h1>
+    <br>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin(loginForm.value)">
+      <input type="text" id="email" class="fadeIn second" placeholder="Correo electrónico" formControlName="email">
+      <input type="password" id="password" class="fadeIn third" placeholder="Contraseña" formControlName="password">
+      <input type="submit" class="fadeIn fourth mt-4" value="Iniciar sesión">
+    </form>
+    <div class="mb-5">
+      <p>¿No tienes una cuenta? <a routerLink="/register">Regístrate</a></p>
+    </div>
+
+    <div class="m-3">
+      <div class="alert alert-danger" role="alert" *ngIf="errStatus">
+        <p>{{ errMsg }}</p>
+      </div>
+    </div>
+
+  </div>
+</div>

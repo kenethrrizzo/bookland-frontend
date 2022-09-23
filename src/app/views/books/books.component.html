@@ -1,0 +1,155 @@
+<app-header></app-header>
+
+<nav class="navbar navbar-light bg-light">
+    <form class="container-fluid justify-content-start">
+        <a href="#createBook" data-bs-toggle="modal" class="link-success"><b>AGREGAR UN NUEVO LIBRO</b></a>
+    </form>
+</nav>
+
+<div class="row mx-auto p-3">
+    <div *ngFor='let book of books' class="col-sm-2">
+        <div class="card m-3" style="width: 18rem;">
+            <img class="card-img-top" [src]="book.coverpage" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title"><b>{{ book.name }}</b></h5>
+                <p class="card-subtitle mb-2 text-muted"><b>Precio:</b> ${{ book.price }}</p>
+                <a href="#moreInfo" data-bs-toggle="modal" class="link-secondary fw-semibold"
+                    (click)="selectBook(book.id)">Más
+                    información</a> <br>
+                <a href="#updateBook" data-bs-toggle="modal" class="link-success fw-semibold"
+                    (click)="selectBook(book.id)">Editar
+                    libro</a> <br>
+                <a class="link-danger fw-semibold" style="cursor: pointer;"
+                    (click)="deleteBook(book.id)">Eliminar libro</a> <br>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Info Modal -->
+<div class="modal fade" id="moreInfo" tabindex="-1" aria-labelledby="bookTittle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookTittle">{{ selectedBook.name }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3><b>Autor:</b> {{ selectedBook.author }}</h3>
+                <p><b>Sinopsis:</b> {{ selectedBook.synopsis }}</p>
+                <h4><b>Precio:</b> ${{ selectedBook.price }}</h4>
+                <div class="row">
+                    <div class="col-sm-1 m-1" *ngFor="let genre of selectedBook.genres">
+                        <span class="badge bg-info text-dark">{{ genre }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update modal -->
+<div class="modal fade" id="updateBook" tabindex="-1" aria-labelledby="bookTittle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookTittle">Actualizar libro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="cleanSelectedBook()"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="bookForm" (ngSubmit)="updateBook(selectedBook.id)">
+                    <div class="row mb-3">
+                        <label for="name" class="col-sm-2 col-form-label">Nombre</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" [value]="selectedBook.name"
+                                formControlName="name">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="synopsis" class="col-sm-2 col-form-label">Sinopsis</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="synopsis" rows="4" formControlName="synopsis"
+                                [value]="selectedBook.synopsis"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="price" class="col-sm-2 col-form-label">Precio</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="price" [value]="selectedBook.price"
+                                formControlName="price">
+                        </div>
+                    </div>
+                    <!-- TODO: Mejorar envio de autor -->
+                    <div class="row mb-3">
+                        <label for="author" class="col-sm-2 col-form-label">Autor</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="author" [value]="selectedBook.author"
+                                formControlName="author">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="coverpage" class="col-sm-2 col-form-label">Portada</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control" id="coverpage" (change)="onFileChange($event)">
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create modal -->
+<div class="modal fade" id="createBook" tabindex="-1" aria-labelledby="bookTittle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bookTittle">Agregar libro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="bookForm" (ngSubmit)="createBook()">
+                    <div class="row mb-3">
+                        <label for="name" class="col-sm-2 col-form-label">Nombre</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" formControlName="name">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="synopsis" class="col-sm-2 col-form-label">Sinopsis</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" id="synopsis" rows="4" formControlName="synopsis"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="price" class="col-sm-2 col-form-label">Precio</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" id="price" formControlName="price">
+                        </div>
+                    </div>
+                    <!-- TODO: Mejorar envio de autor -->
+                    <div class="row mb-3">
+                        <label for="author" class="col-sm-2 col-form-label">Autor</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="author" formControlName="author">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="coverpage" class="col-sm-2 col-form-label">Portada</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control" id="coverpage" (change)="onFileChange($event)">
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-primary">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>
